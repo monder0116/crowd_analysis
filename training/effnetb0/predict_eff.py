@@ -13,7 +13,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 transform = transforms.Compose([
     transforms.Resize((128, 128)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224,
+                                                          0.225]),
 ])
 
 # Load test dataset
@@ -43,14 +44,15 @@ with torch.no_grad():
         inputs = inputs.to(device)
         outputs = model(inputs)
         _, preds = torch.max(outputs, 1)
-        
+
         predicted_class = class_names[preds.item()]
         image_path = test_dataset.samples[i][0]
         image_name = os.path.basename(image_path)
-        
-        prediction_path = os.path.join(output_dir, f'{predicted_class}_{image_name}')
+
+        prediction_path = os.path.join(output_dir,
+                                       f'{predicted_class}_{image_name}')
         Image.open(image_path).save(prediction_path)
-        
+
         print(f'Image {image_name} predicted as {predicted_class}')
 
 print(f'Predictions saved in {output_dir} directory.')

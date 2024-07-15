@@ -8,7 +8,7 @@ Run the script with the following command:
 ```
 1) python3 download_weights.py
 
-2) python3 count.py --gender_model_path ./effb0_best.pth --detector_model_path ./yolov8m.pt --source_path ./test.mp4 --conf_thres 0.25 --iou_thres 0.45 --line_y_position 400
+2) python3 count.py --gender_model_path ./effb0_best.pth --detector_model_path ./yolov8m.pt --source_path ./test.mp4 --line_y_position 250
 ```
 
 

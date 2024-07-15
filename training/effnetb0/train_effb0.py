@@ -18,16 +18,18 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 transform = transforms.Compose([
     transforms.Resize((128, 128)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224,
+                                                          0.225]),
 ])
 
 # Datasets and Dataloaders
-train_dataset = datasets.ImageFolder(root='pa100kdata/train', transform=transform)
+train_dataset = datasets.ImageFolder(root='pa100kdata/train',
+                                     transform=transform)
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
 val_dataset = datasets.ImageFolder(root='pa100kdata/val', transform=transform)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-modelname="effb0"
+modelname = "effb0"
 # Model, Loss, Optimizer
 model = models.efficientnet_b0(pretrained=True)  # EfficientNet-B0 model
 num_features = model.classifier[1].in_features
@@ -41,7 +43,9 @@ best_f1 = 0
 best_model_wts = None
 # File to save metrics
 log_file = open(f'{modelname}_training_log.txt', 'w')
-log_file.write('Epoch,Train Loss,Train F1,Train Recall,Train Precision,Train Top1 Acc,Val Loss,Val F1,Val Recall,Val Precision,Val Top1 Acc\n')
+log_file.write(
+    'Epoch,Train Loss,Train F1,Train Recall,Train Precision,Train Top1 Acc,Val Loss,Val F1,Val Recall,Val Precision,Val Top1 Acc\n'
+)
 
 # Training and Validation Loop
 for epoch in range(num_epochs):
@@ -74,10 +78,14 @@ for epoch in range(num_epochs):
     epoch_loss = running_loss / len(train_dataset)
     epoch_f1 = f1_score(all_labels, all_preds, average='weighted')
     epoch_recall = recall_score(all_labels, all_preds, average='weighted')
-    epoch_precision = precision_score(all_labels, all_preds, average='weighted')
+    epoch_precision = precision_score(all_labels,
+                                      all_preds,
+                                      average='weighted')
     epoch_top1_acc = correct / total
 
-    print(f'Train Loss: {epoch_loss:.4f} F1: {epoch_f1:.4f} Recall: {epoch_recall:.4f} Precision: {epoch_precision:.4f} Top1 Acc: {epoch_top1_acc:.4f}')
+    print(
+        f'Train Loss: {epoch_loss:.4f} F1: {epoch_f1:.4f} Recall: {epoch_recall:.4f} Precision: {epoch_precision:.4f} Top1 Acc: {epoch_top1_acc:.4f}'
+    )
 
     # Validation phase
     model.eval()
@@ -103,13 +111,19 @@ for epoch in range(num_epochs):
     val_epoch_loss = val_running_loss / len(val_dataset)
     val_epoch_f1 = f1_score(val_labels, val_preds, average='weighted')
     val_epoch_recall = recall_score(val_labels, val_preds, average='weighted')
-    val_epoch_precision = precision_score(val_labels, val_preds, average='weighted')
+    val_epoch_precision = precision_score(val_labels,
+                                          val_preds,
+                                          average='weighted')
     val_epoch_top1_acc = val_correct / val_total
 
-    print(f'Val Loss: {val_epoch_loss:.4f} F1: {val_epoch_f1:.4f} Recall: {val_epoch_recall:.4f} Precision: {val_epoch_precision:.4f} Top1 Acc: {val_epoch_top1_acc:.4f}')
+    print(
+        f'Val Loss: {val_epoch_loss:.4f} F1: {val_epoch_f1:.4f} Recall: {val_epoch_recall:.4f} Precision: {val_epoch_precision:.4f} Top1 Acc: {val_epoch_top1_acc:.4f}'
+    )
 
     # Log metrics to file
-    log_file.write(f'{epoch+1},{epoch_loss:.4f},{epoch_f1:.4f},{epoch_recall:.4f},{epoch_precision:.4f},{epoch_top1_acc:.4f},{val_epoch_loss:.4f},{val_epoch_f1:.4f},{val_epoch_recall:.4f},{val_epoch_precision:.4f},{val_epoch_top1_acc:.4f}\n')
+    log_file.write(
+        f'{epoch+1},{epoch_loss:.4f},{epoch_f1:.4f},{epoch_recall:.4f},{epoch_precision:.4f},{epoch_top1_acc:.4f},{val_epoch_loss:.4f},{val_epoch_f1:.4f},{val_epoch_recall:.4f},{val_epoch_precision:.4f},{val_epoch_top1_acc:.4f}\n'
+    )
 
     # Save the best model
     if val_epoch_f1 > best_f1:
