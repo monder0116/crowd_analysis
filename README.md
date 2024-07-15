@@ -6,9 +6,10 @@
 Run the script with the following command:
 
 ```
-1) python3 download_weights.py
+1) Download below tar file and extract them under the testdata directory
+Link: https://drive.google.com/file/d/1CBJemG88zV2_I9bL_UrgE-5Fmy4P4ElC/view?usp=sharing
 
-2) python3 count.py --gender_model_path ./effb0_best.pth --detector_model_path ./yolov8m.pt --source_path ./test.mp4 --line_y_position 250
+2) python3 count.py --gender_model_path ./testdata/effb0_best.pth --detector_model_path ./testdata/yolov8m.pt --source_path ./testdata/test.mp4 --line_y_position 250
 ```
 
 
